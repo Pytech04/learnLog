@@ -23,7 +23,16 @@ app.use('/api/upload', uploadRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  const bucket = process.env.S3_BUCKET_NAME;
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    storage: 'mysql',
+    s3: {
+      enabled: Boolean(bucket && bucket !== 'your_bucket_name'),
+      bucket: bucket || '',
+    },
+  });
 });
 
 // Start server
