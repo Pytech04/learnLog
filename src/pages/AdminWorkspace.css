@@ -1,0 +1,192 @@
+/* ── Admin Workspace ── */
+.admin-header { margin-bottom: 24px; }
+.admin-header h1 { font-size: 1.8rem; margin-bottom: 6px; }
+.admin-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px; }
+.admin-stats { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.admin-my-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  max-width: 400px;
+}
+
+.admin-progress-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.admin-my-progress .progress-bar { flex: 1; }
+
+.admin-progress-pct {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-accent);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(161, 161, 170, 0.06);
+  padding: 5px 12px;
+  border-radius: 100px;
+  border: 1px solid var(--border-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.meta-chip-accent {
+  color: var(--accent-start);
+  border-color: var(--border-accent);
+  background: rgba(245, 158, 11, 0.06);
+}
+
+/* Tabs */
+.admin-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 18px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: inherit;
+}
+
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active {
+  color: var(--text-accent);
+  border-bottom-color: var(--accent-start);
+}
+
+.tab-count {
+  font-size: 0.68rem;
+  background: rgba(161, 161, 170, 0.12);
+  padding: 1px 7px;
+  border-radius: 100px;
+  font-weight: 700;
+}
+
+.tab-count-accent {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--accent-start);
+}
+
+.tab-content { min-height: 300px; }
+
+/* Content tab */
+.content-tab { display: flex; flex-direction: column; gap: 28px; }
+.detail-section { display: flex; flex-direction: column; gap: 14px; }
+.section-title { font-size: 1.05rem; font-weight: 700; }
+.tree-container { padding: 16px; min-height: 100px; }
+.tree-container:hover { transform: none; }
+
+/* Gradebook */
+.gradebook { overflow-x: auto; }
+.gradebook-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.gradebook-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  font-weight: 600;
+}
+
+.gradebook-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.student-name { color: var(--text-primary); font-weight: 600; }
+.student-email { font-size: 0.8rem; color: var(--text-muted); }
+.student-progress { min-width: 120px; }
+.student-pct { font-weight: 700; color: var(--text-accent); font-variant-numeric: tabular-nums; }
+
+/* Invite */
+.invite-tab { display: flex; flex-direction: column; gap: 28px; }
+
+.invite-code-section {
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.invite-code-section:hover { transform: none; }
+.invite-code-section h3 { font-size: 1rem; }
+.invite-desc { font-size: 0.82rem; color: var(--text-muted); }
+
+.invite-code-display {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+.invite-code {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: var(--text-accent);
+  font-family: 'Inter', monospace;
+}
+
+/* Pending */
+.no-pending { font-size: 0.85rem; color: var(--text-muted); }
+
+.pending-list { display: flex; flex-direction: column; gap: 10px; }
+
+.pending-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  gap: 16px;
+}
+
+.pending-card:hover { transform: none; }
+.pending-info { display: flex; flex-direction: column; gap: 2px; }
+.pending-name { font-weight: 600; color: var(--text-primary); font-size: 0.9rem; }
+.pending-email { font-size: 0.78rem; color: var(--text-muted); }
+.pending-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+@media (max-width: 768px) {
+  .admin-header h1 { font-size: 1.4rem; }
+  .admin-tabs { overflow-x: auto; }
+  .tab-btn { padding: 10px 12px; font-size: 0.78rem; }
+  .invite-code { font-size: 1.4rem; }
+  .pending-card { flex-direction: column; align-items: flex-start; }
+  .gradebook-table { font-size: 0.78rem; }
+}

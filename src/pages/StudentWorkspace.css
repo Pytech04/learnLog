@@ -1,0 +1,88 @@
+/* ── Student Workspace ── */
+.student-header { margin-bottom: 36px; }
+
+.student-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.student-icon {
+  color: var(--accent-start);
+  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.4));
+  flex-shrink: 0;
+}
+
+.icon-complete {
+  color: var(--color-success);
+  filter: drop-shadow(0 0 8px rgba(34, 197, 94, 0.4));
+}
+
+.student-header h1 { font-size: 1.8rem; }
+
+.student-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.student-motivation {
+  font-size: 0.88rem;
+  color: var(--text-accent);
+  font-weight: 500;
+  font-style: italic;
+  margin-bottom: 14px;
+  opacity: 0.85;
+}
+
+.student-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.student-progress-bar { max-width: 520px; }
+
+.student-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.section-title { font-size: 1.05rem; font-weight: 700; }
+.section-desc { font-size: 0.82rem; color: var(--text-secondary); max-width: 500px; }
+
+.tree-container { padding: 16px; min-height: 100px; }
+.tree-container:hover { transform: none; }
+
+/* Milestone notification */
+.milestone-notification {
+  position: fixed;
+  top: calc(var(--navbar-height) + 16px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 500;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-lg);
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-accent);
+  box-shadow: var(--accent-glow-strong), var(--shadow-strong);
+  animation: scaleIn 0.3s ease-out, fadeOut 0.5s ease-in 3.5s forwards;
+  white-space: nowrap;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@media (max-width: 768px) {
+  .student-header h1 { font-size: 1.4rem; }
+  .student-progress-bar { max-width: 100%; }
+  .milestone-notification { font-size: 0.85rem; padding: 10px 18px; }
+}

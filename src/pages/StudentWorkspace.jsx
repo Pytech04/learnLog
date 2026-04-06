@@ -1,0 +1,146 @@
+import { useState, useEffect, useCallback } from 'react'
+import { useParams } from 'react-router-dom'
+import { Loader2, Flame, Trophy, Calendar, FileText, FolderOpen } from 'lucide-react'
+import ProgressBar from '../components/ProgressBar'
+import FolderTree from '../components/FolderTree'
+import { getClassroom, getNodes, updateProgress } from '../api'
+import './StudentWorkspace.css'
+
+export default function StudentWorkspace() {
+  const { id } = useParams()
+  const [classroom, setClassroom] = useState(null)
+  const [nodes, setNodes] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [milestone, setMilestone] = useState(null)
+
+  const loadData = useCallback(async () => {
+    try {
+      const [classroomData, nodesData] = await Promise.all([
+        getClassroom(id),
+        getNodes(id),
+      ])
+      setClassroom(classroomData)
+      setNodes(nodesData)
+    } catch (err) {
+      console.error('Failed to load:', err)
+    } finally {
+      setLoading(false)
+    }
+  }, [id])
+
+  useEffect(() => { loadData() }, [loadData])
+
+  async function handleToggle(nodeId, completed) {
+    setNodes((prev) => prev.map((n) => (n.id === nodeId ? { ...n, completed } : n)))
+
+    try {
+      await updateProgress(nodeId, completed)
+      const updatedClassroom = await getClassroom(id)
+      setClassroom(updatedClassroom)
+
+      // Check for milestones
+      if (completed) {
+        const progress = updatedClassroom.progress
+        const milestones = [25, 50, 75, 100]
+        const hit = milestones.find((m) => progress >= m)
+        if (hit && hit > (classroom?.progress || 0)) {
+          showMilestone(hit)
+        }
+      }
+    } catch (err) {
+      setNodes((prev) => prev.map((n) => (n.id === nodeId ? { ...n, completed: !completed } : n)))
+    }
+  }
+
+  function showMilestone(pct) {
+    const messages = {
+      25: "🔥 25% — Building momentum!",
+      50: "⚡ 50% — Halfway there. Keep it burning!",
+      75: "🚀 75% — Almost at the summit!",
+      100: "🏆 100% — You conquered it all!",
+    }
+    setMilestone(messages[pct] || null)
+    setTimeout(() => setMilestone(null), 4000)
+  }
+
+  if (loading) {
+    return (
+      <main className="page"><div className="container">
+        <div className="dashboard-loading"><Loader2 size={32} className="spin" /><p>Loading content...</p></div>
+      </div></main>
+    )
+  }
+
+  if (!classroom) {
+    return (
+      <main className="page"><div className="container">
+        <div className="empty-state"><h2>Classroom not found</h2></div>
+      </div></main>
+    )
+  }
+
+  const progress = classroom.progress || 0
+  const isComplete = progress === 100 && (classroom.total_lessons || 0) > 0
+
+  const formattedDate = new Date(classroom.created_at).toLocaleDateString('en-US', {
+    month: 'long', day: 'numeric', year: 'numeric',
+  })
+
+  function getProgressMessage() {
+    if (isComplete) return "Mission accomplished. You conquered this."
+    if (progress >= 75) return "Almost there. Don't stop now."
+    if (progress >= 50) return "Halfway through. Keep the fire burning."
+    if (progress >= 25) return "Building momentum. Stay focused."
+    if (progress > 0) return "The grind has begun. Keep pushing."
+    return "Zero excuses. Start now."
+  }
+
+  return (
+    <main className="page" id="student-workspace">
+      <div className="container">
+        {/* Milestone notification */}
+        {milestone && (
+          <div className="milestone-notification animate-scale-in" key={milestone}>
+            {milestone}
+          </div>
+        )}
+
+        {/* Header */}
+        <div className="student-header animate-fade-in-up">
+          <div className="student-title-row">
+            {isComplete ? (
+              <Trophy size={26} className="student-icon icon-complete" />
+            ) : (
+              <Flame size={26} className="student-icon" />
+            )}
+            <h1>{classroom.name}</h1>
+          </div>
+
+          {classroom.description && <p className="student-desc">{classroom.description}</p>}
+          <p className="student-motivation">{getProgressMessage()}</p>
+
+          <div className="student-meta">
+            <span className="meta-chip"><Calendar size={14} /> {formattedDate}</span>
+            <span className="meta-chip"><FileText size={14} /> {classroom.total_lessons || 0} lessons</span>
+            <span className="meta-chip meta-chip-accent">
+              <FolderOpen size={14} /> {classroom.completed_lessons || 0} conquered
+            </span>
+          </div>
+
+          <div className="student-progress-bar">
+            <ProgressBar progress={progress} size="lg" />
+          </div>
+        </div>
+
+        {/* Content */}
+        <section className="student-content animate-fade-in-up delay-2">
+          <h2 className="section-title">Course Content</h2>
+          <p className="section-desc">Click any lesson to open it — progress is tracked automatically.</p>
+          <div className="tree-container card">
+            <FolderTree nodes={nodes} onToggleLesson={handleToggle} />
+          </div>
+        </section>
+      </div>
+    </main>
+  )
+}

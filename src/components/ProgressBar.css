@@ -1,0 +1,80 @@
+.progress-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.progress-bar-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(161, 161, 170, 0.1);
+  border-radius: 100px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: var(--accent-gradient);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: progressFill 0.8s ease-out;
+  position: relative;
+}
+
+/* Living flame shimmer on the progress fill */
+.progress-bar-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  animation: shimmer 2s infinite;
+  background-size: 200% 100%;
+}
+
+.progress-complete {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
+}
+
+.progress-complete::after {
+  display: none;
+}
+
+.progress-bar-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-accent);
+  min-width: 38px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.label-complete {
+  color: var(--color-success);
+}
+
+/* Size variants */
+.progress-bar-sm .progress-bar-track {
+  height: 4px;
+}
+
+.progress-bar-sm .progress-bar-label {
+  font-size: 0.7rem;
+}
+
+.progress-bar-lg .progress-bar-track {
+  height: 10px;
+  border-radius: 5px;
+}
+
+.progress-bar-lg .progress-bar-fill {
+  border-radius: 5px;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+}
+
+.progress-bar-lg .progress-bar-label {
+  font-size: 0.95rem;
+  font-weight: 800;
+}

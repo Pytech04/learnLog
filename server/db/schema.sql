@@ -1,0 +1,59 @@
+CREATE DATABASE IF NOT EXISTS learnlog;
+USE learnlog;
+
+-- Users table (local auth)
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(100) NOT NULL UNIQUE,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Classrooms table (replaces courses)
+CREATE TABLE IF NOT EXISTS classrooms (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  description TEXT DEFAULT NULL,
+  owner_id INT NOT NULL,
+  invite_code VARCHAR(8) NOT NULL UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Memberships table (join flow)
+CREATE TABLE IF NOT EXISTS memberships (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  classroom_id INT NOT NULL,
+  role ENUM('teacher', 'student') NOT NULL DEFAULT 'student',
+  status ENUM('pending', 'approved', 'rejected') NOT NULL DEFAULT 'pending',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY unique_membership (user_id, classroom_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (classroom_id) REFERENCES classrooms(id) ON DELETE CASCADE
+);
+
+-- Nodes table (hierarchical content linked to classroom)
+CREATE TABLE IF NOT EXISTS nodes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  classroom_id INT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  type ENUM('folder', 'file') NOT NULL,
+  parent_id INT DEFAULT NULL,
+  resource_url TEXT DEFAULT NULL,
+  FOREIGN KEY (classroom_id) REFERENCES classrooms(id) ON DELETE CASCADE,
+  FOREIGN KEY (parent_id) REFERENCES nodes(id) ON DELETE CASCADE
+);
+
+-- User progress table (per-user per-node completion)
+CREATE TABLE IF NOT EXISTS user_progress (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  node_id INT NOT NULL,
+  completed BOOLEAN DEFAULT FALSE,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY unique_progress (user_id, node_id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (node_id) REFERENCES nodes(id) ON DELETE CASCADE
+);

@@ -1,0 +1,87 @@
+.lesson-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.lesson-item:hover {
+  background: rgba(245, 158, 11, 0.04);
+}
+
+.lesson-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border-radius: 5px;
+  border: 2px solid var(--text-muted);
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  padding: 0;
+}
+
+.lesson-checkbox:hover {
+  border-color: var(--accent-start);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.lesson-checkbox.checked {
+  background: var(--accent-gradient);
+  border-color: var(--accent-start);
+  color: #0a0a0f;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.25);
+}
+
+.lesson-name {
+  flex: 1;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.lesson-name-link {
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.lesson-name-link:hover {
+  color: var(--text-accent);
+  text-decoration: underline;
+  text-decoration-color: rgba(245, 158, 11, 0.4);
+  text-underline-offset: 2px;
+}
+
+.lesson-completed .lesson-name {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--text-muted);
+}
+
+.lesson-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 4px;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: all var(--transition-fast);
+}
+
+.lesson-item:hover .lesson-link {
+  opacity: 1;
+}
+
+.lesson-link:hover {
+  color: var(--text-accent);
+  background: rgba(245, 158, 11, 0.1);
+}
